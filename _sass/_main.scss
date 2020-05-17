@@ -1,25 +1,25 @@
 /*--- LINKS -----------------------------------------------------------------*/
 
-a {  
+a {
 	text-decoration: none;
-	color: $link-color; 
+	color: $link-color;
 
-	&:visited { 
-		color: lighten($link-color, 20); 
+	&:visited {
+		color: lighten($link-color, 20);
 	}
 
-	&:hover { 
-		color: lighten($link-color, 20); 
+	&:hover {
+		color: lighten($link-color, 20);
 	}
 
-	&:focus { 
-		outline: thin dotted; 
+	&:focus {
+		outline: thin dotted;
 		color: darken($link-color, 20);
 	}
 
-	&:hover, 
-	&:active { 
-		outline: 0; 
+	&:hover,
+	&:active {
+		outline: 0;
 	}
 }
 
@@ -76,7 +76,7 @@ pre {
 
 .personal-social-media {
     word-spacing: 10px;
-    
+
     img:hover {
         opacity: 0.5;
     }
@@ -84,14 +84,14 @@ pre {
 
 /*--- DIVIDING LINE ---------------------------------------------------------*/
 
-hr { 
-    display: block; 
-    margin: 1em 0 1.5em; 
+hr {
+    display: block;
+    margin: 1em 0 1.5em;
     padding: 0;
-    height: 1px; 
-    border: 0; 
+    height: 1px;
+    border: 0;
     border-top: 1px solid #ccc;
-    border-bottom: 1px solid #fff; 
+    border-bottom: 1px solid #fff;
 }
 
 /*--- FIGURES & IMAGES ------------------------------------------------------*/
@@ -107,7 +107,7 @@ figure {
 }
 
 svg:not(:root) {
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 /*--- PAGINATION ------------------------------------------------------------*/
@@ -116,20 +116,20 @@ svg:not(:root) {
     a{
         color: lighten($base-color,30);
     }
-    
+
     a:hover {
         color: lighten($base-color,60);
     }
-    
+
     word-spacing: 10px;
 }
 
 /*--- EQUATIONS -------------------------------------------------------------*/
 
 .has-jax {
-    font: inherit; 
-    font-size: 100; 
-    background: inherit; 
+    font: inherit;
+    font-size: 100;
+    background: inherit;
     border: inherit;
     color: #006699;
 }
@@ -155,7 +155,7 @@ svg:not(:root) {
         color: lighten($base-color,30);
         font-weight: 100;
     }
-    
+
     a:hover {
     	text-transform: uppercase;
         color: lighten($base-color,60);
@@ -171,7 +171,7 @@ svg:not(:root) {
     a {
         color: #F2992E;
     }
-    
+
     &:hover {
         color: lighten(#F2992E,20);
     }
@@ -210,7 +210,7 @@ b, i, strong, em, blockquote, p, q, span, figure, img, h1, h2, header, input, a 
 			max-width: $column-width;
 		}
     }
-    
+
     img:hover {
         opacity: 0.8;
     }
@@ -230,7 +230,7 @@ b, i, strong, em, blockquote, p, q, span, figure, img, h1, h2, header, input, a 
 	a {
 		color: lighten($base-color,50);
 	}
-    
+
     a:hover{
         color: lighten($base-color,20);
     }
@@ -272,21 +272,25 @@ header .entry-meta {
 		overflow: hidden;
 
 		@media #{$small} {
-		.featured-image {
+		  .featured-image {
+        height: 200px;
+        overflow: hidden;
 				display:block;
-	        	margin:-25px -15px;
-	        	padding: 0px 0px 20px 0px;
-	        }
-	    }
+        margin:-25px -15px;
+        padding: 0px 0px 20px 0px;
+      }
+    }
 
 		@media #{$medium} {
 			padding: 30px;
 
 			.featured-image {
+        height: 200px;
+        overflow: hidden;
 				display:block;
-	        	margin:-30px -30px;
-	        	padding: 0px 0px 30px 0px;
-	        }
+        margin:-30px -30px;
+        padding: 0px 0px 30px 0px;
+      }
 		}
 
 		@media #{$large} {
@@ -294,19 +298,21 @@ header .entry-meta {
 			padding: 50px 80px;
 
 			.featured-image {
+        height: 200px;
+        overflow: hidden;
 				display:block;
-	        	margin:-50px -80px;
-	        	padding: 0px 0px 50px 0px;
-	        }
+        margin:-50px -80px;
+        padding: 0px 0px 50px 0px;
+      }
 		}
-       
-        a { 
+
+        a {
             img:hover {
                 opacity: 0.9;
             }
         }
 
-        
+
 	}
 }
 
@@ -321,7 +327,7 @@ header .entry-meta {
     a:link{
         color: lighten($text-color,60);
     }
-    
+
 	a:hover {
 		color: lighten($text-color,80);
 	}
