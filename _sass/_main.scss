@@ -278,6 +278,12 @@ header .entry-meta {
 				display:block;
         margin:-25px -15px;
         padding: 0px 0px 20px 0px;
+        img {
+          transform: translate(-50%, -50%);
+          position: relative;
+          top: 50%;
+          left: 50%;
+        }
       }
     }
 
@@ -290,6 +296,12 @@ header .entry-meta {
 				display:block;
         margin:-30px -30px;
         padding: 0px 0px 30px 0px;
+        img {
+          transform: translate(-50%, -50%);
+          position: relative;
+          top: 50%;
+          left: 50%;
+        }
       }
 		}
 
@@ -303,6 +315,12 @@ header .entry-meta {
 				display:block;
         margin:-50px -80px;
         padding: 0px 0px 50px 0px;
+        img {
+          transform: translate(-50%, -50%);
+          position: relative;
+          top: 50%;
+          left: 50%;
+        }
       }
 		}
 
