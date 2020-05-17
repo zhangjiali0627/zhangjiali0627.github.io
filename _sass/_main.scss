@@ -273,10 +273,10 @@ header .entry-meta {
 
 		@media #{$small} {
 		  .featured-image {
-        height: 200px;
+        height: 330px;
         overflow: hidden;
-				display:block;
-        margin:-25px -15px;
+				display: block;
+        margin: -25px -15px 0;
         padding: 0px 0px 20px 0px;
         img {
           transform: translate(-50%, -50%);
@@ -291,10 +291,10 @@ header .entry-meta {
 			padding: 30px;
 
 			.featured-image {
-        height: 200px;
+        height: 330px;
         overflow: hidden;
-				display:block;
-        margin:-30px -30px;
+				display: block;
+        margin: -30px -30px 0;
         padding: 0px 0px 30px 0px;
         img {
           transform: translate(-50%, -50%);
@@ -310,10 +310,10 @@ header .entry-meta {
 			padding: 50px 80px;
 
 			.featured-image {
-        height: 200px;
+        height: 330px;
         overflow: hidden;
-				display:block;
-        margin:-50px -80px;
+				display: block;
+        margin: -50px -80px 0;
         padding: 0px 0px 50px 0px;
         img {
           transform: translate(-50%, -50%);
