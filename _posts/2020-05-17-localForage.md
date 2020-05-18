@@ -63,7 +63,7 @@ localForage就是用来规避上面localStorage的缺点，同时保留localStor
 
 * IndexedDB的代码
 
-```html
+```js
   let db;
   let dbName = "dataspace";
   let users = [ {id: 1, fullName: 'Matt'}, {id: 2, fullName: 'Bob'} ];
@@ -101,7 +101,7 @@ localForage就是用来规避上面localStorage的缺点，同时保留localStor
 
 * localForage 代码：
 
-```html
+```js
 // 保存用户信息
   let users = [ {id: 1, fullName: 'Matt'}, {id: 2, fullName: 'Bob'} ];
   localForage.setItem('users', users, (result) => {
@@ -126,7 +126,7 @@ indexedDB存储空间几乎不受限制，性能也不错，支持各种数据�
 
 比方说，你要下载一个用户的个人资料图片，并对其进行缓存以供离线使用。使用 localForage 很容易保存二进制数据：
 
-```html
+```js
   // 使用 AJAX 下载图片
   let request = new XMLHttpRequest();
 
@@ -149,7 +149,7 @@ indexedDB存储空间几乎不受限制，性能也不错，支持各种数据�
 
 下次，只用三行代码就可以从缓存中把照片读取出来
 
-```html
+```js
   localForage.getItem('user_1_photo', (photo) => {
     // 获取到图片数据后，可以通过创建 data URI 或者其它方法来显示
     console.log(photo);
@@ -160,7 +160,7 @@ indexedDB存储空间几乎不受限制，性能也不错，支持各种数据�
 
 如果你不喜欢在你的代码中使用回调，你可以使用 ES6 Promises，来替换 localForage 的回调参数。让我们使用上面的照片例子，看下使用 Promises 的代码：
 
-```html
+```js
   localForage.getItem('user_1_photo').then((photo) => {
     // 获取到图片数据后，可以通过创建 data URI 或者其它方法来显示
     console.log(photo);
