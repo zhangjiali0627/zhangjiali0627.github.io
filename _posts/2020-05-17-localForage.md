@@ -1,6 +1,6 @@
 ---
 layout: post
-categories: 浏览器
+categories: JavaScript
 title: "本地存储JS库localForage简介"
 subtitle: "一个东西是否有生命力，看的不是其是否强大，而是看其是否足够简单."
 featured-image: /images/2020-05-17/localForage.png
