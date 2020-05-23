@@ -68,45 +68,45 @@ IndexedDB是一个比较复杂的API，涉及到很多概念：
 
 1. 首先要先判断浏览器是否支持IndexedDB:
 
-```js
-  let indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
-  if(!indexedDB)
-    {
-      console.log("你的浏览器不支持IndexedDB");
-    }
-```
+    ```js
+      let indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+      if(!indexedDB)
+        {
+          console.log("你的浏览器不支持IndexedDB");
+        }
+    ```
 
 2. 创建请求打开IndexedDB：使用indexedDB.open()方法
 
-```js
-/**
-* 第一个参数是数据库的名称，如果指定的数据库不存在，就会新建数据库
-* 第二个参数是数据库的版本，如果省略，打开已有的数据库时，默认为当前版本；新建数据库时，默认为1；
-*/
-  let request = indexedDB.open(name, version);
-```
-indexedDB.open()方法返回一个IDBRequest对象。这个对象通过error、success、upgradeneeded处理打开数据库的操作结果：
+    ```js
+    /**
+    * 第一个参数是数据库的名称，如果指定的数据库不存在，就会新建数据库
+    * 第二个参数是数据库的版本，如果省略，打开已有的数据库时，默认为当前版本；新建数据库时，默认为1；
+    */
+      let request = indexedDB.open(name, version);
+    ```
+    indexedDB.open()方法返回一个IDBRequest对象。这个对象通过error、success、upgradeneeded处理打开数据库的操作结果：
 
-- error表示打开数据库失败
-```js
-  request.onerror = () => {
-    db = request.result;
-  };
-```
+    - error表示打开数据库失败
+    ```js
+      request.onerror = () => {
+        db = request.result;
+      };
+    ```
 
-- success表示打开数据库成功
-```js
-  request.onsuccess = () => {
-    db = request.result;
-  };
-```
+    - success表示打开数据库成功
+    ```js
+      request.onsuccess = () => {
+        db = request.result;
+      };
+    ```
 
-- upgradeneeded在数据库升级的时候调用（数据库初始化或者指定的版本号>数据库的实际版本号）
-```js
-  request.onupgradeneeded = (event) => {
-    db = event.target.result;
-  };
-```
+    - upgradeneeded在数据库升级的时候调用（数据库初始化或者指定的版本号>数据库的实际版本号）
+    ```js
+      request.onupgradeneeded = (event) => {
+        db = event.target.result;
+      };
+    ```
 
 3. 新建数据库
 
