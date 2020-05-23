@@ -110,161 +110,161 @@ IndexedDB是一个比较复杂的API，涉及到很多概念：
 
 3. 新建数据库
 
-新建数据库与打开数据库是同一个操作。如果指定的数据库不存在，就会新建。不同之处在于，后续的操作主要在upgradeneeded事件的监听函数里面完成，因为这时版本从无到有，所以会触发这个事件。
+    新建数据库与打开数据库是同一个操作。如果指定的数据库不存在，就会新建。不同之处在于，后续的操作主要在upgradeneeded事件的监听函数里面完成，因为这时版本从无到有，所以会触发这个事件。
 
-- 在创建对象仓库之前，需要先判断一下，这张表是否存在，如果不存在再新建.createObjectStore()
-- 新建对象仓库之后，可以新建索引：IDBObject.createIndex()的三个参数分别为索引名称、索引所在的属性、配置对象（说明该属性是否包含重复的值）
+    - 在创建对象仓库之前，需要先判断一下，这张表是否存在，如果不存在再新建.createObjectStore()
+    - 新建对象仓库之后，可以新建索引：IDBObject.createIndex()的三个参数分别为索引名称、索引所在的属性、配置对象（说明该属性是否包含重复的值）
 
-```js
-  request.onupgradeneeded = (event) => {
-    db = event.target.result;
-    if (!db.objectStoreNames.contains('file')) { // 判断对象仓库是否存在
-      objectStoreStart = db.createObjectStore('file', { keyPath: 'key' }); // 创建对象仓库
-      objectStoreStart.createIndex('key', 'key', { unique: true });  // 新建索引 ——指定主键
-      objectStoreStart.createIndex('md5Code', 'md5Code', { unique: false });
-    }
-  };
-```
+    ```js
+      request.onupgradeneeded = (event) => {
+        db = event.target.result;
+        if (!db.objectStoreNames.contains('file')) { // 判断对象仓库是否存在
+          objectStoreStart = db.createObjectStore('file', { keyPath: 'key' }); // 创建对象仓库
+          objectStoreStart.createIndex('key', 'key', { unique: true });  // 新建索引 ——指定主键
+          objectStoreStart.createIndex('md5Code', 'md5Code', { unique: false });
+        }
+      };
+    ```
 
-- 如果数据记录里面没有合适作为主键的属性，那么可以让 IndexedDB 自动生成主键。
+    - 如果数据记录里面没有合适作为主键的属性，那么可以让 IndexedDB 自动生成主键。
 
-```js
-  // 指定主键为一个递增的整数。
-  let objectStore = db.createObjectStore('person', { autoIncrement: true });
-```
+    ```js
+      // 指定主键为一个递增的整数。
+      let objectStore = db.createObjectStore('person', { autoIncrement: true });
+    ```
 
 4. 新增数据
 
-- 是指向对象仓库写入数据记录，需要通过事务完成。
-- IDBObjectStore.add()方法用于写入记录。
+    - 是指向对象仓库写入数据记录，需要通过事务完成。
+    - IDBObjectStore.add()方法用于写入记录。
 
-```js
-  addFileDB = (addFileInfo) => {
-    request = db.transaction(['file'], 'readwrite')
-      .objectStore('file')
-      .add({ ...addFileInfo });
+    ```js
+      addFileDB = (addFileInfo) => {
+        request = db.transaction(['file'], 'readwrite')
+          .objectStore('file')
+          .add({ ...addFileInfo });
 
-    request.onsuccess = (event) => {
-      console.log('数据写入成功');
-    };
+        request.onsuccess = (event) => {
+          console.log('数据写入成功');
+        };
 
-    request.onerror = (event) => {
-      console.log('数据写入失败');
-    }
-  }
-```
+        request.onerror = (event) => {
+          console.log('数据写入失败');
+        }
+      }
+    ```
 
-上面代码中，写入数据需要新建一个事务。新建时必须指定**表格名称**和**操作模式**（"只读"或"读写"）。新建事务以后，通过IDBTransaction.objectStore(name)方法，拿到 IDBObjectStore 对象，再通过表格对象的add()方法，向表格写入一条记录。
+    上面代码中，写入数据需要新建一个事务。新建时必须指定**表格名称**和**操作模式**（"只读"或"读写"）。新建事务以后，通过IDBTransaction.objectStore(name)方法，拿到 IDBObjectStore 对象，再通过表格对象的add()方法，向表格写入一条记录。
 
-写入操作是一个**异步**操作，通过监听连接对象的success事件和error事件，了解是否写入成功。
+    写入操作是一个**异步**操作，通过监听连接对象的success事件和error事件，了解是否写入成功。
 
 5. 删除数据
 
-- IDBObjectStore.delete()方法用于删除记录。
+    - IDBObjectStore.delete()方法用于删除记录。
 
-```js
-  removeFileDB = (key) => {
-    request = db.transaction(['file'], 'readwrite')
-      .objectStore('file')
-      .delete({ key });
+    ```js
+      removeFileDB = (key) => {
+        request = db.transaction(['file'], 'readwrite')
+          .objectStore('file')
+          .delete({ key });
 
-    request.onsuccess = (event) => {
-      console.log('数据删除成功');
-    };
+        request.onsuccess = (event) => {
+          console.log('数据删除成功');
+        };
 
-    request.onerror = (event) => {
-      console.log('数据删除失败');
-    }
-  }
-```
+        request.onerror = (event) => {
+          console.log('数据删除失败');
+        }
+      }
+    ```
 
 6. 更新数据
 
-- IDBObject.put()方法用于更新数据
+    - IDBObject.put()方法用于更新数据
 
-```js
-  updateFileDB = (updateFileInfo) => {
-    request = db.transaction(['file'], 'readwrite')
-      .objectStore('file')
-      .put({ ...updateFileInfo });
+    ```js
+      updateFileDB = (updateFileInfo) => {
+        request = db.transaction(['file'], 'readwrite')
+          .objectStore('file')
+          .put({ ...updateFileInfo });
 
-    request.onsuccess = (event) => {
-      console.log('数据删除成功');
-    };
+        request.onsuccess = (event) => {
+          console.log('数据删除成功');
+        };
 
-    request.onerror = (event) => {
-      console.log('数据删除失败');
-    }
-  }
-```
+        request.onerror = (event) => {
+          console.log('数据删除失败');
+        }
+      }
+    ```
 
 7. 查询数据
 
-### 读取数据
-- objectStore.get()方法用于读取数据，参数是主键的值。
+    ### 读取数据
+    - objectStore.get()方法用于读取数据，参数是主键的值。
 
-### 使用索引
-- 索引的意义在于，可以让你搜索任意字段，也就是说从任意字段拿到数据记录。如果不建立索引，默认只能搜索主键（即从主键取值）。
+    ### 使用索引
+    - 索引的意义在于，可以让你搜索任意字段，也就是说从任意字段拿到数据记录。如果不建立索引，默认只能搜索主键（即从主键取值）。
 
-```js
-  searchData = (key) => {
-    return new Promise(function (resolve) {
-      request = db.transaction(['file'], 'readonly')
-        .objectStore('file')
-        .index('key');
-      request = request.get(key);
-      let result;
+    ```js
+      searchData = (key) => {
+        return new Promise(function (resolve) {
+          request = db.transaction(['file'], 'readonly')
+            .objectStore('file')
+            .index('key');
+          request = request.get(key);
+          let result;
 
-      request.onsuccess = (e) => {
-        result = e.target.result;
-        if (result) {
-          resolve(result);
-        }
-        else {
-          resolve('noHave');
-        }
-      };
-      return result;
-    });
-  }
-```
+          request.onsuccess = (e) => {
+            result = e.target.result;
+            if (result) {
+              resolve(result);
+            }
+            else {
+              resolve('noHave');
+            }
+          };
+          return result;
+        });
+      }
+    ```
 
 8. 遍历数据
 
-- 要使用指针对象 IDBCursor，遍历数据表格的所有记录
+    - 要使用指针对象 IDBCursor，遍历数据表格的所有记录
 
-```js
-  readAll = () => {
-    let objectStore = db.transaction('fileDB').objectStore('file');
+    ```js
+      readAll = () => {
+        let objectStore = db.transaction('fileDB').objectStore('file');
 
-    objectStore.openCursor().onsuccess = (event) => {
-      let cursor = event.target.result;
+        objectStore.openCursor().onsuccess = (event) => {
+          let cursor = event.target.result;
 
-      if (cursor) {
-        console.log('Id: ' + cursor.key);
-        console.log('Name: ' + cursor.value.name);
-        console.log('Age: ' + cursor.value.age);
-        console.log('Email: ' + cursor.value.email);
-        cursor.continue();
-      } else {
-        console.log('没有更多数据了！');
+          if (cursor) {
+            console.log('Id: ' + cursor.key);
+            console.log('Name: ' + cursor.value.name);
+            console.log('Age: ' + cursor.value.age);
+            console.log('Email: ' + cursor.value.email);
+            cursor.continue();
+          } else {
+            console.log('没有更多数据了！');
+          }
+        };
       }
-    };
-  }
-```
-新建指针对象的openCursor()方法是一个异步操作，所以要监听success事件。
+    ```
+    新建指针对象的openCursor()方法是一个异步操作，所以要监听success事件。
 
 9. 关闭与删除数据库
 
-- 关闭数据库可以直接调用数据库对象的close方法
-```js
-  db.close();
-```
+    - 关闭数据库可以直接调用数据库对象的close方法
+    ```js
+      db.close();
+    ```
 
-- 删除数据库使用数据库对象的deleteDatabase方法
-```js
-  indexedDB.deleteDatabase(name);
-```
+    - 删除数据库使用数据库对象的deleteDatabase方法
+    ```js
+      indexedDB.deleteDatabase(name);
+    ```
 
 ## 总结
-以上就是indexedDB的一些基本概念以及使用，还有一些更深入的细节没有介绍，比如indexedDB的游标结合索引，发挥其真正的优势，有兴趣的小伙伴可以继续深入研究，还有就是要注意浏览器的支持问题，IE9以及更早的版本并不支持，火狐和谷歌浏览器没有问题，推荐使用。
+    以上就是indexedDB的一些基本概念以及使用，还有一些更深入的细节没有介绍，比如indexedDB的游标结合索引，发挥其真正的优势，有兴趣的小伙伴可以继续深入研究，还有就是要注意浏览器的支持问题，IE9以及更早的版本并不支持，火狐和谷歌浏览器没有问题，推荐使用。
