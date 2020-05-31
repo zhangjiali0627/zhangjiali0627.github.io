@@ -3,7 +3,7 @@ layout: post
 categories: JavaScript
 title: "本地存储JS库localForage简介"
 subtitle: "一个东西是否有生命力，看的不是其是否强大，而是看其是否足够简单."
-featured-image: /images/img/localForage.png
+featured-image: /images/img/localForage.jpg
 tags: ['本地存储']
 date-string: MAY 17, 2020
 ---
