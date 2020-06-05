@@ -10,7 +10,7 @@ date-string: Jun 5, 2020
 
 ## React如何实现锚点滚动
 
-==实现锚点滚动, 不要用<a>标签, 因为会触发路由跳转==
+实现锚点滚动, 不要用<a>标签, 因为会触发路由跳转
 
 - 可以使用H5提供的API scrollToAnchor
 
@@ -84,7 +84,7 @@ date-string: Jun 5, 2020
   </div>
 ```
 
-==主要的修改:==
+主要的修改:
 
 1. 将锚点使用的传统的name属性，改成id属性。这样我们就可以用document.getElementById方法方便的查询查询到锚点。
 2. 将原来的红色按钮的href属性去掉，然后添加一个onClick方法。onClick方法传入一个锚点的id，然后用下面的函数来找到锚点并跳转到锚点。
@@ -104,7 +104,7 @@ element.scrollIntoView(scrollIntoViewOptions); // Object型参数
 alignToTop是一个布尔值，
 - 如果为true，元素的顶端将和其所在滚动区的可视区域的顶端对齐。
 - 如果为false，元素的底端将和其所在滚动区的可视区域的底端对齐.
-- ==默认是true==
+- 默认是true
 
 scrollIntoViewOptions是一个boolean或一个带有选项的object：
 ```js
