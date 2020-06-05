@@ -3,7 +3,7 @@ layout: post
 categories: 页面交互
 title: "项目知识点规整——react中锚链接的实现方式以及监听滚动条"
 subtitle: "在开发检索中心界面的时候涉及到了最常见的交互方式——锚链接及监听滚动条。想通过博客的方式记录下来，方便后期继续深入研究。"
-featured-image: /images/img/indexedDB.png
+featured-image: /images/img/anchor.jpg
 tags: ['前端交互']
 date-string: Jun 5, 2020
 ---
@@ -23,7 +23,9 @@ date-string: Jun 5, 2020
   }
 ```
 
-- eg——不用scrollToAnchor的情况
+eg:
+
+不用scrollToAnchor的情况
 
 ```html
   <div>
@@ -62,7 +64,8 @@ date-string: Jun 5, 2020
       if(anchorElement) { anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'}); }
     }
   }
-
+```
+```html
   <div>
     <div>be together. not the same.</div>
     <div>welcome to android... be yourself. do your thing. see what's going on.</div>
