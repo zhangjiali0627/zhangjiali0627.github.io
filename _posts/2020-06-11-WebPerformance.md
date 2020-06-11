@@ -64,5 +64,36 @@ date-string: Jun 5, 2020
 
 我们前面已经提到，DOM变动和样式变动，都会触发重新渲染。但是浏览器已经很智能了，会尽量把所有的变动集中在一起，排成一个队列，然后一次性执行，尽量避免多次重新渲染。
 
+```js
+  div.style.color = 'blue';
+  div.style.marginTop = '30px';
+```
+
+上面的代码中，div元素有两个样式变动，但是浏览器只会触发一次重排和重绘。
+
+如果写的不好，就会触发两次重排和重绘。
+
+```js
+  div.style.color = 'blue';
+
+  let margin = parseInt(div.style.marginTop);
+
+  div.style.marginTop = (margin + 10) + 'px';
+```
+
+上面代码对div元素设置背景色以后，第二行要求浏览器给出该元素的位置，所以浏览器不得不立即重排。
+
+一般来说，样式的写操作之后，如果有下面这些属性的读操作，都会引发浏览器立即重新渲染。
+
+```js
+  offsetTop/offsetLeft/offsetWidth/offsetHeight
+
+  scrollTop/scrollLeft/scrollWidth/scrollHeight
+
+  clientTop/clientLeft/clientWidth/clientHeight
+
+  getComputedStyle()
+```
+
 ## 总结
     以上就是在react中实现锚链接的方式以及监听滚动条的方法,当然也有实现类似效果的其他方法,后续会逐步补充!
