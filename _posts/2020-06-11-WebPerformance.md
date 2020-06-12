@@ -125,19 +125,19 @@ div.style.top = div.offsetTop + 10 + "px";
 
 3. 不要一条条地改变样式，而要通过改变class或者cssText属性，一次性改变样式。
 
-```js
-  // bad
-  let left = 10;
-  let top = 10;
-  el.style.left = left + "px";
-  el.style.top  = top  + "px";
+    ```js
+      // bad
+      let left = 10;
+      let top = 10;
+      el.style.left = left + "px";
+      el.style.top  = top  + "px";
 
-  // good
-  el.className += " theclassname";
+      // good
+      el.className += " theclassname";
 
-  // good
-  el.style.cssText += "; left: " + left + "px; top: " + top + "px;";
-```
+      // good
+      el.style.cssText += "; left: " + left + "px; top: " + top + "px;";
+    ```
 
 4. 尽量使用离线DOM，而不是真实的DOM，来改变元素样式。比如，使用 cloneNode() 方法，在克隆的节点上进行操作，然后再用克隆的节点替换原始节点。再比如，操作Document Fragment对象，完成后再把这个对象加入DOM。
 
@@ -149,7 +149,7 @@ div.style.top = div.offsetTop + 10 + "px";
 
 8. 使用虚拟DOM；
 
-9.【个人很少使用，可以尝试】 可以使用window.requestAnimationFrame()、window.requestIdleCallback()这两个方法来调节重新渲染。
+9. 【个人很少使用，可以尝试】 可以使用window.requestAnimationFrame()、window.requestIdleCallback()这两个方法来调节重新渲染。
 
 
 ## 总结
