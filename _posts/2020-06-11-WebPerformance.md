@@ -2,7 +2,7 @@
 layout: post
 categories: js
 title: "网页性能"
-subtitle: "- If you can’t measure it, you can’t improve it. – Peter Drucker"
+subtitle: "If you can’t measure it, you can’t improve it. – Peter Drucker"
 featured-image: /images/img/anchor.jpg
 tags: ['性能优化']
 date-string: Jun 11, 2020
@@ -123,7 +123,7 @@ div.style.top = div.offsetTop + 10 + "px";
 
 一般的规则是：
 
-```js
+```
 
   样式表越简单，重排和重绘就越快。
 
@@ -279,9 +279,9 @@ div.style.top = div.offsetTop + 10 + "px";
 
   1. timeRemaining() 方法
 
-  timeRemaining() 方法返回当前帧还剩余的毫秒。这个方法只能读，不能写，而且会动态更新。因此可以不断检查这个属性，如果还有剩余时间的话，就不断执行某些任务。一旦这个属性等于0，就把任务分配到下一轮requestIdleCallback。
+    timeRemaining() 方法返回当前帧还剩余的毫秒。这个方法只能读，不能写，而且会动态更新。因此可以不断检查这个属性，如果还有剩余时间的话，就不断执行某些任务。一旦这个属性等于0，就把任务分配到下一轮requestIdleCallback。
 
-  前面的示例代码之中，只要当前帧还有空闲时间，就不断调用doWorkIfNeeded方法。一旦没有空闲时间，但是任务还没有全执行，就分配到下一轮requestIdleCallback。
+    前面的示例代码之中，只要当前帧还有空闲时间，就不断调用doWorkIfNeeded方法。一旦没有空闲时间，但是任务还没有全执行，就分配到下一轮requestIdleCallback。
 
   2. didTimeout属性
 
@@ -295,6 +295,7 @@ div.style.top = div.offsetTop + 10 + "px";
   ```
 
   因此，如果回调函数执行了，无非是两种原因：当前帧有空闲时间，或者指定时间到了。
+
   ```js
     function myNonEssentialWork (deadline) {
       while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && tasks.length > 0)
@@ -307,8 +308,11 @@ div.style.top = div.offsetTop + 10 + "px";
     requestIdleCallback(myNonEssentialWork, 5000);
   ```
 
+  上面代码确保了，doWorkIfNeeded 函数一定会在将来某个比较空闲的时间（或者在指定时间过期后）得到反复执行。
 
+  requestIdleCallback 是一个很新的函数，刚刚引入标准，目前只有Chrome支持。
 
 
 ## 说明
-    以上就是在react中实现锚链接的方式以及监听滚动条的方法,当然也有实现类似效果的其他方法,后续会逐步补充!
+
+  下一篇中会重点介绍浏览器相关的性能优化工具。
