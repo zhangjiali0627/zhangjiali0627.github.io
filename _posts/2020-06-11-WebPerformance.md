@@ -2,13 +2,16 @@
 layout: post
 categories: js
 title: "网页性能"
-subtitle: "互联网有一项闻名的8秒准绳。用户在访问Web网页时，若是时间超过8秒就会感应不不耐烦，若是加载时间太长，他们就会放弃访问。大部分用户希望网页能在2秒之内就完成加载。事实上，加载时间每多1秒，你就会流失7%的用户。8秒并不是切确的8秒钟，只是向网站开发者剖清楚明了加载时间的重要性。"
+subtitle: "- If you can’t measure it, you can’t improve it. – Peter Drucker"
 featured-image: /images/img/anchor.jpg
 tags: ['性能优化']
 date-string: Jun 11, 2020
 ---
 
 #### 前言
+
+
+互联网有一项闻名的8秒准绳。用户在访问Web网页时，若是时间超过8秒就会感应不不耐烦，若是加载时间太长，他们就会放弃访问。大部分用户希望网页能在2秒之内就完成加载。事实上，加载时间每多1秒，你就会流失7%的用户。8秒并不是切确的8秒钟，只是向网站开发者剖清楚明了加载时间的重要性。
 
 如果网页响应非常慢，大多数用户应该都会选择关闭这个页面，作为开发者，我们肯定不愿意看到这种情况，那我们应该怎样提高性能呢？
 
@@ -17,6 +20,9 @@ date-string: Jun 11, 2020
 ## 一、网页生成的过程
 
 要理解网页的性能为什么不好，就必须了解网页是怎么生成的。
+
+
+
 
 网页的生成过程，可以分为5步：
 
@@ -174,6 +180,135 @@ div.style.top = div.offsetTop + 10 + "px";
 9. 【个人很少使用，可以尝试】 可以使用window.requestAnimationFrame()、window.requestIdleCallback()这两个方法来调节重新渲染。
 
 
+## 五、window.requestAnimationFrame()
 
-## 总结
+- 可以调节重新渲染，大幅提高网页性能。它可以将某些代码放到下一次重新渲染时执行。
+
+  ```js
+
+    function doubleHeight(element) {
+      var currentHeight = element.clientHeight;
+      element.style.height = (currentHeight * 2) + 'px';
+    }
+    elements.forEach(doubleHeight);
+
+  ```
+
+  上面的代码使用循环操作，将每个元素的高度都增加一倍。可是，每次循环都是，读操作后面跟着一个写操作。这会在短时间内触发大量的重新渲染，对于网页性能很不利。
+
+  这时候就可以使用window.requestAnimationFrame()，让读操作和写操作分离，把所有的写操作放到下一次重新渲染。
+
+  ```js
+
+    function doubleHeight(element) {
+      var currentHeight = element.clientHeight;
+      window.requestAnimationFrame(function () {
+        element.style.height = (currentHeight * 2) + 'px';
+      });
+    }
+    elements.forEach(doubleHeight);
+
+  ```
+
+  上一篇博客中涉及到的页面滚动事件（scroll）监听函数，就可以使用window.requestAnimationFrame(),推迟到下一次重新渲染。
+
+  ```js
+
+    window.addEventListener('scroll', () => {
+      window.requestAnimationFrame(this.bindHandleScroll);
+    });
+
+  ```
+
+  - 最适用的场合还是网页动画。下面是一个旋转动画的例子，元素每一帧旋转1度。
+
+  ```js
+
+    var rAF = window.requestAnimationFrame;
+
+    var degrees = 0;
+    function update() {
+      div.style.transform = "rotate(" + degrees + "deg)";
+      console.log('updated to degrees ' + degrees);
+      degrees = degrees + 1;
+      rAF(update);
+    }
+    rAF(update);
+
+  ```
+
+## 六、window.requestIdleCallback()
+
+- 也可以用来调节重新渲染。指定只有当一帧的末尾有空余时间，才会执行回调函数。
+
+  ```js
+
+    requestIdleCallback(fn);
+
+  ```
+
+  上面代码中，只有当前帧的运行时间小于16.66ms时，函数fn才会执行。否则，就推迟到下一帧，如果下一帧也没有空闲时间，就推迟到下下一帧，以此类推。
+
+  - 它还可以接受第二个参数，表示指定的毫秒数。如果在指定的这段时间之内，每一帧都没有空闲时间，那么函数fn将会强制执行。
+
+  ```js
+
+    requestIdleCallback(fn, 5000);
+
+  ```
+
+  上面的代码表示，函数fn最迟会在5000毫秒之后执行。
+
+- 函数 fn 可以接受一个 deadline 对象作为参数。
+
+  ```js
+    requestIdleCallback(function someHeavyComputation(deadline) {
+      while(deadline.timeRemaining() > 0) {
+        doWorkIfNeeded();
+      }
+
+      if(thereIsMoreWorkToDo) {
+        requestIdleCallback(someHeavyComputation);
+      }
+    });
+  ```
+
+  上面代码中，回调函数 someHeavyComputation 的参数是一个 deadline 对象。
+
+  deadline对象有一个方法和一个属性：timeRemaining() 和 didTimeout。
+
+  1. timeRemaining() 方法
+
+  timeRemaining() 方法返回当前帧还剩余的毫秒。这个方法只能读，不能写，而且会动态更新。因此可以不断检查这个属性，如果还有剩余时间的话，就不断执行某些任务。一旦这个属性等于0，就把任务分配到下一轮requestIdleCallback。
+
+  前面的示例代码之中，只要当前帧还有空闲时间，就不断调用doWorkIfNeeded方法。一旦没有空闲时间，但是任务还没有全执行，就分配到下一轮requestIdleCallback。
+
+  2. didTimeout属性
+
+  deadline对象的 didTimeout 属性会返回一个布尔值，表示指定的时间是否过期。这意味着，如果回调函数由于指定时间过期而触发，那么你会得到两个结果。
+
+  ```js
+
+    timeRemaining方法返回0
+    didTimeout 属性等于 true
+
+  ```
+
+  因此，如果回调函数执行了，无非是两种原因：当前帧有空闲时间，或者指定时间到了。
+  ```js
+    function myNonEssentialWork (deadline) {
+      while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && tasks.length > 0)
+        doWorkIfNeeded();
+
+      if (tasks.length > 0)
+        requestIdleCallback(myNonEssentialWork);
+    }
+
+    requestIdleCallback(myNonEssentialWork, 5000);
+  ```
+
+
+
+
+## 说明
     以上就是在react中实现锚链接的方式以及监听滚动条的方法,当然也有实现类似效果的其他方法,后续会逐步补充!
