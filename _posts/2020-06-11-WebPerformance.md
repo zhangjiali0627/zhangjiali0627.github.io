@@ -23,7 +23,6 @@ date-string: Jun 11, 2020
 
 
 
-
 网页的生成过程，可以分为5步：
 
 1. HTML代码转化为DOM tree
