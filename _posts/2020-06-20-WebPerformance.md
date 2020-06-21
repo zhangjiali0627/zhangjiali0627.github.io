@@ -75,30 +75,30 @@ Chrome浏览器开发者工具的performance面板（Timeline），是查看“�
 - 第三部分：线程面板：火焰图
   1. Frames：帧线程，在Frames图表中，把鼠标移动到绿色条状图上，Devtools会展示这个帧的FPS。看有没有达到60的标准。
 
-    <img src="/images/img/performance8.jpeg" alt="" >
+      <img src="/images/img/performance8.jpeg" alt="" >
 
   2. Main：主线程，展示主线程的运行状况，负责执行Javascript，解析HTML/CSS，完成绘制。
   
-    - 可以看到主线程调用栈和耗时情况，每个长条都是一个事件，悬浮可以看到耗时和事件名
+      - 可以看到主线程调用栈和耗时情况，每个长条都是一个事件，悬浮可以看到耗时和事件名
 
+
+
+        - x轴代表着加载的时间。长条越长就代表这个event花费的时间越长。
+        - y轴代表了调用栈（call stack）。表示事件（线程）的执行顺序，在栈里，上面的event调用了下面的event。先是上面的执行再到下面的，我们要特别注意红色的三角形部分
     
+      <img src="/images/img/performance4.jpeg" alt="" >
 
-    - x轴代表着加载的时间。长条越长就代表这个event花费的时间越长。
-    - y轴代表了调用栈（call stack）。表示事件（线程）的执行顺序，在栈里，上面的event调用了下面的event。先是上面的执行再到下面的，我们要特别注意红色的三角形部分
+      不同的颜色表示不同的事件。
+
+      <img src="/images/img/performance5.png" alt="" >
+
+      哪种色块比较多，就说明性能耗费在那里。色块越长，问题越大。
+
+      <img src="/images/img/performance6.png" alt="" >
     
-    <img src="/images/img/performance4.jpeg" alt="" >
-
-    不同的颜色表示不同的事件。
-
-    <img src="/images/img/performance5.png" alt="" >
-
-    哪种色块比较多，就说明性能耗费在那里。色块越长，问题越大。
-
-    <img src="/images/img/performance6.png" alt="" >
-  
   3. Raster线程：负责完成某个layer或者某些块(tile)的绘制。
 
-    <img src="/images/img/performance7.png" alt="" >
+      <img src="/images/img/performance7.png" alt="" >
   
 
 - 第四部分： 统计面板：
