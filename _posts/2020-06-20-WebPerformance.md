@@ -3,7 +3,7 @@ layout: post
 categories: js
 title: "网页性能工具——performance（Timeline）"
 subtitle: "Chrome Devtool Performance，是基于谷歌浏览器下的一个开发调测工具，它的前身是Timeline。主要功能是分析运行时性能表现"
-featured-image: /images/img/anchor.jpg
+featured-image: /images/img/performance.jpeg
 tags: ['性能优化']
 date-string: Jun 20, 2020
 ---
