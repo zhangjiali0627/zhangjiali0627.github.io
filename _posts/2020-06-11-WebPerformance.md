@@ -3,7 +3,7 @@ layout: post
 categories: js
 title: "网页性能"
 subtitle: "If you can’t measure it, you can’t improve it. – Peter Drucker"
-featured-image: /images/img/anchor.jpg
+featured-image: /images/img/performance.jpeg
 tags: ['性能优化']
 date-string: Jun 11, 2020
 ---
