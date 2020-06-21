@@ -30,9 +30,7 @@ date-string: Jun 20, 2020
 
 一秒之间能够完成多少次重新渲染，这个指标就被称为“刷新率”，英文为FPS（frame per second）。60次重新渲染，就是60FPS。
 
-如果想达到60帧的刷新率，就意味着javascript线程中每个任务的耗时，必须少于16ms，一个解决办法就是使用Web Worker，主线程只用于UI渲染，然后跟UI渲染不相干的任务，都放在Worker线程。
-
-## 开发者工具的Timeline面板（Chrome 57已经改为performance（性能模板））
+## 开发者工具的performance面板
 
 Chrome浏览器开发者工具的performance面板（Timeline），是查看“刷新率”的最佳工具。
 
@@ -72,7 +70,7 @@ Chrome浏览器开发者工具的performance面板（Timeline），是查看“�
 
     - HTML文件是蓝色。脚本是黄色。样式是紫色。媒体文件是绿色。其它资源是灰色。
   
-  ### 把鼠标移动到FPS、CPU或者NET图表之上，就会展示这个时间点界面的截图。左右移动鼠标，可以重发当时的屏幕录像。这就是scrubbing，可以用来分析动画的各个细节。 
+  #### 把鼠标移动到FPS、CPU或者NET图表之上，就会展示这个时间点界面的截图。左右移动鼠标，可以重发当时的屏幕录像。这就是scrubbing，可以用来分析动画的各个细节。 
 
 - 第三部分：线程面板：火焰图
   1. Frames：帧线程，在Frames图表中，把鼠标移动到绿色条状图上，Devtools会展示这个帧的FPS。看有没有达到60的标准。
@@ -81,8 +79,8 @@ Chrome浏览器开发者工具的performance面板（Timeline），是查看“�
 
   2. Main：主线程，展示主线程的运行状况，负责执行Javascript，解析HTML/CSS，完成绘制。
   
-      - 可以看到主线程调用栈和耗时情况，每个长条都是一个事件，悬浮可以看到耗时和事件名
-  
+    #### 可以看到主线程调用栈和耗时情况，每个长条都是一个事件，悬浮可以看到耗时和事件名
+
     - x轴代表着加载的时间。长条越长就代表这个event花费的时间越长。
     - y轴代表了调用栈（call stack）。表示事件（线程）的执行顺序，在栈里，上面的event调用了下面的event。先是上面的执行再到下面的，我们要特别注意红色的三角形部分
     
@@ -114,6 +112,10 @@ Chrome浏览器开发者工具的performance面板（Timeline），是查看“�
     - (2)total-time 这个事件从开始到结束消耗的时间（包含子事件）
 
   - Call Tree：调用栈：Main选择一个事件，可以看到整个事件的调用栈（从最顶层到最底层，而不是只有当前事件）
+    
+    - 可以通过调用树来查看各个文件调用运行的时间及占比。
+
+    <img src="/images/img/performance11.png" alt="" >
 
   - Event Log：事件日志
     - (1) 多了个start time，指事件在多少毫秒开始触发的
@@ -139,16 +141,32 @@ Chrome浏览器开发者工具的performance面板（Timeline），是查看“�
   <img src="/images/img/performance3.png" alt="" >
 
 
+## 定位性能瓶颈
 
+在性能报告中，有很多的数据。可以通过双击，拖动等等动作来放大缩小报告范围，从各种时间段来观察分析报告。
+
+<img src="/images/img/performance3.jpeg" alt="" >
+
+在事件长条的右上角出，如果出现了红色小三角，说明这个事件是存在问题的，需要特别注意。
+
+双击这个带有红色小三角的的事件。在Summary面板会看到详细信息。注意reveal这个链接，双击它会让高亮触发这个事件的event。如果点击了ui.dll.js:45这个链接，Devtools会跳转到需要优化的代码处。
+
+<img src="/images/img/performance12.png" alt="" >
+
+
+<img src="/images/img/performance10.png" alt="" >
+
+<img src="/images/img/performance11.jpeg" alt="" >
+
+
+
+### 如果想达到60帧的刷新率，就意味着javascript线程中每个任务的耗时，必须少于16ms，一个解决办法就是使用Web Worker，主线程只用于UI渲染，然后跟UI渲染不相干的任务，都放在Worker线程。
 
 ## Web Workers
 
 我们知道Javascript是单线程的，但是浏览器并不是单线程的。Javascript在浏览器的主线程运行，这正好可以与样式计算、布局等许多其他情况下的渲染操作一起运行，如果Javascript的运行时间过长，就会阻塞这些后续工作，导致帧丢失。
 
 
-
-
-
 ## 说明
 
-  下一篇中会重点介绍浏览器相关的性能优化工具。
+  下一篇中会重点介绍Web Worker。
