@@ -5,7 +5,7 @@ title: "web Worker（下）"
 subtitle: "web worker 是运行在后台的 JavaScript，不会影响页面的性能。"
 featured-image: /images/img/performance.jpeg
 tags: ['性能优化']
-date-string: Jun 23, 2020
+date-string: Jul 12, 2020
 ---
 
 ## 数据通信
