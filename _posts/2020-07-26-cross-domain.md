@@ -53,7 +53,7 @@ jsonp 跨域其实也是Javascript设计模式中的一种代理模式。在html
   }
 ```
 
-当然，jquery也支持jsonp的实现方式
+当然，jquery也支持jsonp的实现方式。
 
 ```js
   $.ajax({
