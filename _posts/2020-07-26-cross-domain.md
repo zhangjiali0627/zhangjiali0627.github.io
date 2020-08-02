@@ -70,7 +70,7 @@ jsonp 跨域其实也是Javascript设计模式中的一种代理模式。在html
 
 ### 二、postMessage 跨域
 
-这是由H5提出来的一个API，IE8+，chrome，FF都支持实现这个功能。这个功能非常的简单，其中包括接受信息的message时间，和发送信息的postMessage方法。
+这是由html5提出来的一个API，IE8+，chrome，FF都支持实现这个功能。这个功能非常的简单，其中包括接受信息的message时间，和发送信息的postMessage方法。
 
 发送信息的postMessage方法是向外界窗口发送信息
 ```
@@ -289,7 +289,7 @@ window.name属性可设置或者返回存放窗口名称的一个字符串。神
 
 那应该如何实现跨域呢？
 
-如果index页面要获取远端服务器的数据，动态插入一个iframe，将iframe的src执行服务器地址，这时，top window和包裹这个iframe的子窗口是不能通信的，因为同源策略，所以改变子窗口的路径就可以了，将数据当作改变后的路径的hash值加载路径上，然后就可以通信了。将数据加在index页面地址的hash上，index页面监听hash的变化，h5的hashchange方法
+如果index页面要获取远端服务器的数据，动态插入一个iframe，将iframe的src执行服务器地址，这时，top window和包裹这个iframe的子窗口是不能通信的，因为同源策略，所以改变子窗口的路径就可以了，将数据当作改变后的路径的hash值加载路径上，然后就可以通信了。将数据加在index页面地址的hash上，index页面监听hash的变化，html5的hashchange方法
 
 ```html
   <body>
