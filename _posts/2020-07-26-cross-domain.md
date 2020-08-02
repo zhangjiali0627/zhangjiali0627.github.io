@@ -37,7 +37,7 @@ date-string: Jul 26, 2020
 
 ## 跨域的解决办法
 
-### jsonp 跨域
+### 一、jsonp 跨域
 
 jsonp 跨域其实也是Javascript设计模式中的一种代理模式。在html页面中通过相应的标签从不同域名下加载静态资源文件是被浏览器允许的，所以我们可以通过这个“漏洞”来进行跨域。一般，我们可以动态的创建script标签，再去请求一个带参网址来实现跨域通信。
 
@@ -68,7 +68,7 @@ jsonp 跨域其实也是Javascript设计模式中的一种代理模式。在html
 ```
 #### 虽然这种方式非常好用，兼容性也非常好，但是一个最大的缺陷是，只能够实现get请求。
 
-### postMessage 跨域
+### 二、postMessage 跨域
 
 这是由H5提出来的一个API，IE8+，chrome，FF都支持实现这个功能。这个功能非常的简单，其中包括接受信息的message时间，和发送信息的postMessage方法。
 
@@ -135,7 +135,7 @@ b.html(www.bai.com/b.html)
 ```
 
 
-### document.domain + iframe 跨域
+### 三、document.domain + iframe 跨域
 
 这种跨域的方式最主要的是要求主域名相同。
 
@@ -210,7 +210,7 @@ a.baidu.com下有一个test.html文件
 ```
 此时刷新浏览器，就会发现数据请求成功了~~~~~
 
-### window.name + iframe 跨域
+### 四、window.name + iframe 跨域
 
 window.name属性可设置或者返回存放窗口名称的一个字符串。神奇之处在于name值在不同页面或者不同域下加载后依旧存在，没有修改就不会发生变化，并且可以存储非常长的name（2MB）
 
