@@ -277,3 +277,91 @@ window.name属性可设置或者返回存放窗口名称的一个字符串。神
 所以如上，我们就拿到了服务器返回的数据，但是有几个条件是必不可少的：
 - iframe标签的跨域能力
 - window.names属性值在文档刷新后依然存在的能力
+
+#### 以下内容为2020年8月2日新增
+### 五、location.hash + iframe 跨域
+
+这个方法同样是动态插入一个iframe然后设置其src为服务端地址，而服务端同样输出一端js代码，也同时通过与子窗口之间的通信来完成数据的传输。
+
+设置锚点，让文档跳到指定的位置。锚点通过a标签来设置，然后href跳到指定的id（前提是有滚动条）。
+
+而location.hash其实就是url的锚点。比如http://www.baidu.com#artical的网址打开后，在控制台输入location.hash就会返回#artical的字段。
+
+那应该如何实现跨域呢？
+
+如果index页面要获取远端服务器的数据，动态插入一个iframe，将iframe的src执行服务器地址，这时，top window和包裹这个iframe的子窗口是不能通信的，因为同源策略，所以改变子窗口的路径就可以了，将数据当作改变后的路径的hash值加载路径上，然后就可以通信了。将数据加在index页面地址的hash上，index页面监听hash的变化，h5的hashchange方法
+
+```html
+  <body>
+    <script type="text/javascript">
+      getData = (url, fn) => {
+        let iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = url;
+
+        iframe.onload = function() {
+          fn(iframe.contentWindow.location.hash.substring(1));
+          window.location.hash = '';
+          document.body.removeChild(iframe);
+        };
+
+        document.body.appendChild(iframe);
+      }
+
+      // get data from server
+      let url = 'http://localhost:8080/data.php';
+      getData(url, (data) => {
+        let jsondata = JSON.parse(data);
+        console.log(jsondata.name + ' ' + jsondata.age);
+      });
+    </script>
+  </body>
+```
+
+**补充说明**：其实location.hash和window.name都是差不多的，都是利用全局对象属性的方法，然后这两种方法和jsonp也是一样的，就是只能够实现get请求
+
+### 六、跨域资源共享CORS——目前的主流跨域解决方案
+
+CORS是一个W3C标准，全称是“跨域资源共享”（Cross-origin resource sharing）。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。CORS需要浏览器和服务器同时支持。（IE10+）IE8/9需要使用XDomainRequest对象来支持CORS；
+
+整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于我们而言，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。
+因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。
+
+CORS与JSONP的使用目的相同，但是比JSONP更强大。JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
+
+### 七、WebSocket协议跨域
+
+WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器全双工通信，同时允许跨域通讯，是server push技术的一种很好的实现。
+原生WebSocket API使用起来不太方便，我们使用Socket.io，它很好地封装了webSocket接口，提供了更简单、灵活的接口，也对不支持webSocket的浏览器提供了向下兼容。
+
+```html
+  <div>user input：<input type="text"></div>
+  <script src="./socket.io.js"></script>
+  <script>
+    let socket = io('http://www.domain2.com:8080');
+
+    // 连接成功处理
+    socket.on('connect', () => {
+        // 监听服务端消息
+        socket.on('message', (msg) => {
+            console.log('data from server: ---> ' + msg); 
+        });
+
+        // 监听服务端关闭
+        socket.on('disconnect', () => { 
+            console.log('Server socket has closed.'); 
+        });
+    });
+
+    document.getElementsByTagName('input')[0].onblur = () => {
+        socket.send(this.value);
+    };
+  </script>
+```
+
+### 八、node代理跨域
+
+node中间件实现跨域代理，是通过启一个代理服务器，实现数据的转发，也可以通过设置cookieDomainRewrite参数修改响应头中cookie中域名，实现当前域的cookie写入，方便接口登录认证。
+
+### 九、nginx代理跨域
+
