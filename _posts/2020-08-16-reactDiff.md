@@ -46,7 +46,7 @@ React Diff算法是将Virtual DOM树转换成真实DOM树的最少操作的过�
 
 这样，最直接的提升就是复杂度变为线型增长而不是原先的指数增长。
 
-<img src="/images/img/diff/diff.webp" alt="" >
+<img src="/images/img/diff/diff.jpg" alt="" >
 
 那么问题来了，如果DOM节点出现了跨层级操作,diff会咋办呢？
 
@@ -75,7 +75,7 @@ React对不同的组件间的比较，有三种策略:
 - 移动：组件D已经在集合（A,B,C,D）里了，且集合更新时，D没有发生更新，只是位置改变，如新集合（A,D,B,C），D在第二个，无须像传统diff，让旧集合的第二个B和新集合的第二个D 比较，并且删除第二个位置的B，再在第二个位置插入D，而是 （对同一层级的同组子节点） 添加唯一key进行区分，移动即可。
 
 
-<img src="/images/img/diff/elementDiff.webp" alt="" >
+<img src="/images/img/diff/elementDiff.jpg" alt="" >
 
 
 ## 总结
