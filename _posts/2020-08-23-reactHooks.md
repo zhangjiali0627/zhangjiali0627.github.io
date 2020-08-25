@@ -237,3 +237,44 @@ useEffect(()  =>  {
    }
 ```
 上面代码中，每当组件参数personId发生变化，useEffect()就会执行。组件第一次渲染时，useEffect()也会执行
+
+## 创建自己的 Hooks
+
+上例的 Hooks 代码还可以封装起来，变成一个自定义的 Hook，便于共享。
+
+```js
+   const usePerson = (personId) => {
+      const [loading, setLoading] = useState(true);
+      const [person, setPerson] = useState({});
+      useEffect(() => {
+         setLoading(true);
+         fetch(`https://swapi.co/api/people/${personId}/`)
+            .then(response => response.json())
+            .then(data => {
+            setPerson(data);
+            setLoading(false);
+            });
+      }, [personId]);  
+      return [loading, person];
+   };
+```
+上面代码中，usePerson()就是一个自定义的 Hook。
+
+Person 组件就改用这个新的钩子，引入封装的逻辑。
+```js
+   const Person = ({ personId }) => {
+      const [loading, person] = usePerson(personId);
+
+      if (loading === true) {
+         return <p>Loading ...</p>;
+      }
+
+      return (
+         <div>
+            <p>You're viewing: {person.name}</p>
+            <p>Height: {person.height}</p>
+            <p>Mass: {person.mass}</p>
+         </div>
+      );
+   };
+```
