@@ -195,4 +195,45 @@ useReducers()钩子用来引入 Reducer 功能。
    }
 ```
 
-由于 Hooks 可以提供共享状态和 Reducer 函数，所以它在这些方面可以取代 Redux。但是，它没法提供中间件（middleware）和时间旅行（time travel），如果你需要这两个功能，还是要用 Redux。
+由于 Hooks 可以提供共享状态和 Reducer 函数，所以它在这些方面可以取代 Redux。但是，它没法提供中间件（middleware）和时间旅行（time travel），如果我们需要这两个功能，还是要用 Redux。
+
+## useEffect()：副作用钩子
+useEffect()用来引入具有副作用的操作，最常见的就是向服务器请求数据。以前，放在componentDidMount里面的代码，现在可以放在useEffect()。
+
+useEffect()的用法如下。
+```js
+useEffect(()  =>  {
+  // Async Action
+}, [dependencies])
+```
+
+上面用法中，useEffect()接受两个参数。第一个参数是一个函数，异步操作的代码放在里面。第二个参数是一个数组，用于给出 Effect 的依赖项，只要这个数组发生变化，useEffect()就会执行。第二个参数可以省略，这时每次组件渲染时，就会执行useEffect()。
+
+例子：
+```js
+   const Person = ({ personId }) => {
+      const [loading, setLoading] = useState(true);
+      const [person, setPerson] = useState({});
+
+      useEffect(() => {
+         setLoading(true); 
+         fetch(`https://swapi.co/api/people/${personId}/`)
+            .then(response => response.json())
+            .then(data => {
+            setPerson(data);
+            setLoading(false);
+            });
+      }, [personId])
+
+      if (loading === true) {
+         return <p>Loading ...</p>
+      }
+
+      return <div>
+         <p>You're viewing: {person.name}</p>
+         <p>Height: {person.height}</p>
+         <p>Mass: {person.mass}</p>
+      </div>
+   }
+```
+上面代码中，每当组件参数personId发生变化，useEffect()就会执行。组件第一次渲染时，useEffect()也会执行
